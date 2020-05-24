@@ -12,11 +12,20 @@ const mdAutenticacion = require('../middlewares/autenticacion');
 // ====================================================
 app.get('/', async (req,res) => {
     try {
-        let usuarios = await Usuario.find({},'nombre email img role');   
+        let desde = req.query.desde || 0;
+        desde = Number(desde);
+
+        let usuarios = await Usuario
+            .find({},'nombre email img role')
+            .skip(desde)
+            .limit(5);   
+        
+        let conteo = await Usuario.count();
 
         res.status(200).json({
             ok:true,
-            usuarios
+            total:conteo,
+            usuarios,
         });
     } catch (error) {
         res.status(400).json({
