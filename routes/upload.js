@@ -10,7 +10,9 @@ const Medico   = require('../models/medico');
 
 app.use(fileUpload());
 
-
+// ====================================================
+// Actualizar imagen de un modelo
+// ====================================================
 app.put('/:tipo/:id',async(req,res) => {
     try {
         
