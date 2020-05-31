@@ -6,6 +6,7 @@ const config = require('../config/config');
 // ====================================================
 exports.verficaToken = function (req, res, next){
     var token = req.get('token');
+    //var token = req.query.token;
 
     jwt.verify(token,config.SEED,(err,decoded) => {
         if(err){

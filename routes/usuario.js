@@ -39,7 +39,7 @@ app.get('/', async (req,res) => {
 // ====================================================
 // Crear un nuevo usuario
 // ====================================================
-app.post('/', mdAutenticacion.verficaToken, async (req,res) => {
+app.post('/', async (req,res) => {
     try {
         let body = req.body;
 

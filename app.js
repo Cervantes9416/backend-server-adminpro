@@ -11,6 +11,14 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
+//Habilitar CORS
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token");
+  res.header("Access-Control-Allow-Methods","POST, GET, PUT, DELETE, OPTIONS");
+  next();
+});
+
 //Importar Rutas
 var appRoutes        = require('./routes/app');
 var usuariosRoutes   = require('./routes/usuario');

@@ -59,9 +59,9 @@ app.post('/',async(req,res) => {
 app.post('/google', async (req, res) => {
     try {
         let token = req.body.token;
-        var googleUser = await verify(token)
+        var googleUser = await verify(token);
 
-        let usuarioDB = await Usuario.findOne({email:googleUser.email})
+        let usuarioDB = await Usuario.findOne({email:googleUser.email});
 
         if (usuarioDB) {
             if (usuarioDB.google === false) {
@@ -74,6 +74,7 @@ app.post('/google', async (req, res) => {
 
                 res.status(200).json({
                     ok: true,
+                    usuarioDB,
                     token:newtoken
                 });
             }
@@ -92,7 +93,7 @@ app.post('/google', async (req, res) => {
 
         res.status(200).json({
             ok: true,
-            usuario:newUser,
+            usuarioDB:newUser,
         });   
     } catch (error) {
         res.status(500).json({
@@ -109,7 +110,6 @@ async function verify(token) {
         audience: config.CLIENT_ID
     });
     const payload = ticket.getPayload();
-    console.log(payload);
     
     return {
         nombre:payload.name,
