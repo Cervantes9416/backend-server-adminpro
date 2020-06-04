@@ -18,7 +18,7 @@ app.get('/',async (req,res) => {
             .find({})
             .skip(desde)
             .limit(5)
-            .populate('usuario');
+            .populate('usuario','nombre img email google');
 
         res.status(200).json({
             ok:true,
@@ -34,6 +34,38 @@ app.get('/',async (req,res) => {
 });
 
 // ====================================================
+// Obtener un hospital
+// ====================================================
+app.get('/:id',async(req,res)=>{
+    try {
+        
+        let _id = req.params.id;
+        let hospital = await Hospital
+            .findById(_id)
+            .populate('usuario','nombre img email google');
+
+        if(!hospital){
+            return res.status(404).json({
+                ok:false,
+                message:'Hospital no encontrado',
+            });
+        }
+
+        res.status(200).json({
+            ok:true,
+            hospital
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            ok:false,
+            error,
+        });        
+    }
+});
+
+
+// ====================================================
 // Crear nuevo hospital
 // ====================================================
 app.post('/',mdAutenticacion.verficaToken,async(req,res) => {
@@ -47,7 +79,7 @@ app.post('/',mdAutenticacion.verficaToken,async(req,res) => {
         });
 
         let hospitalDB = await hospital.save();
-
+        
         res.status(200).json({
             ok:true,
             hospital:hospitalDB,
@@ -68,10 +100,10 @@ app.put('/:id',mdAutenticacion.verficaToken,async(req,res) => {
     try {
         let _id = req.params.id;
         let body = req.body;
-            
-        let hospital = Hospital.findByIdAndUpdate(_id, body, {new:true});
 
-        if(!hospital){
+        let hospitalDB = await Hospital.findByIdAndUpdate(_id, body, {new:true});
+        
+        if(!hospitalDB){
             return res.status(404).json({
                 ok:false,
                 message:'Hospital no encontrado',
@@ -80,12 +112,13 @@ app.put('/:id',mdAutenticacion.verficaToken,async(req,res) => {
 
         res.status(200).json({
             ok:true,
-            hospital
+            hospital:hospitalDB
         });
         
     } catch (error) {
         res.status(500).json({
             ok:false,
+            message:'Error al actualizar el usuario',
             error,
         });        
     }

@@ -42,6 +42,39 @@ app.get('/',async(req,res)=>{
 });
 
 // ====================================================
+// Obtener un medico
+// ====================================================
+app.get('/:id',async(req,res)=>{
+    try {
+        let _id = req.params.id;
+        
+        let medico = await Medico.findById(_id)
+            .populate('usuario','nombre email')
+            .populate('hospital','nombre');
+        
+        if(!medico){
+            res.status(404).json({
+                ok:false,
+                message:'No encontrado'
+            })
+        }
+
+        res.status(200).json({
+            ok:true,
+            medico
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            ok:false,
+            error:{
+                message:'Error al obtener el Medico'
+            }
+        });
+    }
+});
+
+// ====================================================
 // Crear nuevo medico
 // ====================================================
 app.post('/',mdAutenticacion.verficaToken, async(req,res)=>{

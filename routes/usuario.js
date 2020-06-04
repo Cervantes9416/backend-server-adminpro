@@ -16,7 +16,7 @@ app.get('/', async (req,res) => {
         desde = Number(desde);
 
         let usuarios = await Usuario
-            .find({},'nombre email img role')
+            .find({},'nombre email img role google')
             .skip(desde)
             .limit(5);   
         

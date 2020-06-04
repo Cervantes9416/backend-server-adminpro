@@ -39,7 +39,7 @@ app.get('/coleccion/:tabla/:busqueda',async(req,res)=>{
     var respuesta = [];
     switch (TABLA) {
         case "usuario":
-            respuesta = await Usuario.find({},'nombre email role img').or([{'nombre':regex},{'email':regex}]);
+            respuesta = await Usuario.find({},'nombre email role img google').or([{'nombre':regex},{'email':regex}]);
             break;
         case "medico":
             respuesta = await Medico.find({nombre:regex});

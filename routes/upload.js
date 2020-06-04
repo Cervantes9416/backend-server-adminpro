@@ -78,7 +78,7 @@ async function subirPorTipo(tipo, _id, nombreArchivo, res){
 
         usuario.img = nombreArchivo;
         let usuarioActualizado = await usuario.save();
-
+        
         return res.status(200).json({
             ok:true,
             message:'Usuario Actualizado',
@@ -89,18 +89,19 @@ async function subirPorTipo(tipo, _id, nombreArchivo, res){
     if(tipo === 'medicos'){
         let medico = Medico.findById(_id);
         var pathViejo = './uploads/medicos/' + medico.img;
-
+        console.log(pathViejo);
         if(fs.existsSync(pathViejo)){
             fs.unlinkSync(pathViejo);
         }
 
-        medico.img = nombreArchivo;
-        let medicoActualizado = await medico.save();
-
+        //medico.img = nombreArchivo;
+        //let medicoActualizado = await medico.save();
+        let medicoActualizado = await Medico.findByIdAndUpdate(_id,{img:nombreArchivo},{new:true});
+        console.log(medicoActualizado);
         return res.status(200).json({
             ok:true,
             message:'Medico Actualizado',
-            usuario:usuarioActualizado,
+            usuario:medicoActualizado,
         });
     }
 
@@ -111,11 +112,16 @@ async function subirPorTipo(tipo, _id, nombreArchivo, res){
         if(fs.existsSync(pathViejo)){
             fs.unlinkSync(pathViejo);
         }
+        hospital.img = nombreArchivo;
+        console.log(hospital.img);
+        //let hospitalActualizado = await hospital.save();
+        let hospitalActualizado = await Hospital.findByIdAndUpdate(_id,{img:nombreArchivo},{new:true});
+        //console.log(hospitalActualizado);
 
         return res.status(200).json({
             ok:true,
             message:'Hospital Actualizado',
-            usuario:usuarioActualizado,
+            usuario:hospitalActualizado,
         });
     }
 }
