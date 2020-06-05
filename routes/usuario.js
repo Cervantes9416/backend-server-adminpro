@@ -71,7 +71,7 @@ app.post('/', async (req,res) => {
 // ====================================================
 // Actualizar usuario
 // ====================================================
-app.put('/:id',mdAutenticacion.verficaToken,async (req,res) => {
+app.put('/:id',[mdAutenticacion.verficaToken,mdAutenticacion.verificaAdmin],async (req,res) => {
     try {
         let _id = req.params.id;
         let body = req.body;
@@ -102,7 +102,7 @@ app.put('/:id',mdAutenticacion.verficaToken,async (req,res) => {
 // ====================================================
 // Eliminar Usuario por ID
 // ====================================================
-app.delete('/:id',mdAutenticacion.verficaToken, async (req,res) => {
+app.delete('/:id',[mdAutenticacion.verficaToken,mdAutenticacion.verificaAdmin], async (req,res) => {
     try {
         
         let _id = req.params.id;
