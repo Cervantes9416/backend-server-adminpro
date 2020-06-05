@@ -10,6 +10,29 @@ const Usuario = require('../models/usuario');
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(config.CLIENT_ID);
 
+//Midlewares
+const mdAutenticacion = require('../middlewares/autenticacion');
+
+// ====================================================
+// RenuevaToken
+// ====================================================
+app.get('/renuevatoken',mdAutenticacion.verficaToken,async(req,res)=>{
+    try {
+
+        const token = jwt.sign({usuario:req.usuario},config.SEED,{expiresIn:14400});
+        res.status(200).json({
+            ok:true,
+            usuario:req.usuario,
+            token:token,
+        });
+
+    } catch (error) {
+        res.status(400).json({
+            ok:true,
+            mensaje:'Token no valido',
+        });
+    }
+});
 
 // ====================================================
 // Login del Usuario
